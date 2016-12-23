@@ -28,6 +28,37 @@ regenerate `data/schema.json`, and restart the server:
 npm run update-schema
 npm start
 ```
+## GraphQL Test Code
+```
+mutation {
+  insertAddress(input: {address_1: "333 Blah Street", address_2: "", city: "Montreal", postal_code: "M3M1G9"}) {
+    address {
+      address_1
+      address_2
+      city
+      postal_code
+      id
+    }
+  }
+}
+
+
+query {
+  viewer {
+    addresses {
+      edges {
+        node {
+          address_1,
+          address_2,
+          postal_code,
+          city,
+          id
+        }
+      }
+    }
+  }
+}
+```
 
 ## References:
 
