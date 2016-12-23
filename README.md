@@ -1,6 +1,6 @@
-# React, GraphQL & Relay Playground
+# React, GraphQL & Relay Test Project
 
-This project includes an app server, a GraphQL server, relay and a transpiler that you can use to test Graphql, Relay and React components.
+This project includes GraphQL server, relay and a transpiler that you can use to test Graphql, Relay and React components.
 
 ## Installation
 
