@@ -1,6 +1,6 @@
 # React, GraphQL & Relay Playground
 
-This kit includes an app server, a GraphQL server, and a transpiler that you can use to get started building an app with Graphql, Relay and React. For a walkthrough, see the [Relay tutorial](https://facebook.github.io/relay/docs/tutorial.html).
+This project includes an app server, a GraphQL server, relay and a transpiler that you can use to test Graphql, Relay and React components.
 
 ## Installation
 
@@ -28,3 +28,12 @@ regenerate `data/schema.json`, and restart the server:
 npm run update-schema
 npm start
 ```
+
+## References:
+
+- For a walkthrough, see the [Relay tutorial](https://facebook.github.io/relay/docs/tutorial.html).
+- [ES6 Quick Guide](http://es6-features.org).
+- [Graphql](http://graphql.org/learn/).
+- [Relay](https://facebook.github.io/relay/docs/tutorial.html)
+- [React Tutorial](https://scotch.io/tutorials/learning-react-getting-started-and-concepts)
+- [Babel Try it out](https://babeljs.io/repl/).
