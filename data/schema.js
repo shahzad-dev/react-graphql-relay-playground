@@ -84,31 +84,17 @@ var faction = {
             city: 'Houston',
             postal_code: '233441',
         }
+    ],
+    hobbies: [
+      { title:"Cricket" },
+      { title: "Reading" },
+      { title: "Traveling" }
     ]
 }
-var userType = new GraphQLObjectType({
-  name: 'User',
-  description: 'A person who uses our app',
-  fields: () => ({
-    id: globalIdField('User'),
-    widgets: {
-      type: widgetConnection,
-      description: 'A person\'s collection of widgets',
-      args: connectionArgs,
-      resolve: (_, args) => connectionFromArray(getWidgets(), args),
-    },
-    addresses: {
-        type: addressConnection,
-        description: 'A person\'s addresses',
-        args: connectionArgs,
-        resolve: (_, args) => connectionFromArray(
-            faction.addresses.map((address) => address),
-            args
-        ),
-    }
-  }),
-  interfaces: [nodeInterface],
-});
+
+/**
+*  Types
+*/
 
 var widgetType = new GraphQLObjectType({
   name: 'Widget',
@@ -148,13 +134,67 @@ var addressType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
+var hobbyType = new GraphQLObjectType({
+  name: 'Hobbies',
+  description: 'A user hobbies',
+  fields: () => ({
+    id: globalIdField('Widget'),
+    title: {
+      type: GraphQLString,
+      description: 'Hobby Type',
+    },
+  }),
+  interfaces: [nodeInterface],
+});
+
+
 /**
  * Define your own connection types here
  */
- var {connectionType: addressConnection} =
+
+var {connectionType: addressConnection} =
    connectionDefinitions({name: 'Address', nodeType: addressType});
+
 var {connectionType: widgetConnection} =
   connectionDefinitions({name: 'Widget', nodeType: widgetType});
+
+var {connectionType: hobbyConnection} =
+  connectionDefinitions({name: 'Hobby', nodeType: hobbyType});
+
+
+var userType = new GraphQLObjectType({
+  name: 'User',
+  description: 'A person who uses our app',
+  fields: () => ({
+    id: globalIdField('User'),
+    widgets: {
+      type: widgetConnection,
+      description: 'A person\'s collection of widgets',
+      args: connectionArgs,
+      resolve: (_, args) => connectionFromArray(getWidgets(), args),
+    },
+    addresses: {
+        type: addressConnection,
+        description: 'A person\'s addresses',
+        args: connectionArgs,
+        resolve: (_, args) => connectionFromArray(
+            faction.addresses.map((address) => address),
+            args
+        ),
+    },
+    hobbies: {
+        type: hobbyConnection,
+        description: 'A person\'s hobbies',
+        args: connectionArgs,
+        resolve: (_, args) => connectionFromArray(
+            faction.hobbies.map((hobby) => hobby),
+            args
+        ),
+    }
+  }),
+  interfaces: [nodeInterface],
+});
+
 
 /**
  * This is the type that will be the root of our query,
@@ -226,10 +266,33 @@ const addressAddMutation = mutationWithClientMutationId({
   }
 });
 
+function addHobby(values){
+    var hobbyId = faction.hobbies.push(values)  - 1;
+    return { hobbyId };
+}
+const hobbyAddMutation = mutationWithClientMutationId({
+  name: 'InsertHobby',
+  inputFields: {
+    title: {
+      type: new GraphQLNonNull(GraphQLString)
+    },
+  },
+  outputFields: {
+    hobby: {
+      type: hobbyType,
+      resolve: payload => faction.hobbies[payload.hobbyId],
+    }
+  },
+  mutateAndGetPayload: (args) => {
+    return addHobby(args);
+  }
+});
+
 var mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    insertAddress: addressAddMutation
+    insertAddress: addressAddMutation,
+    insertHobby: hobbyAddMutation,
   })
 });
 
