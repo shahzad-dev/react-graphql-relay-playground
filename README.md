@@ -34,4 +34,4 @@ npm run update-schema
 npm start
 ```
 
-For more info, please check wikis.
+For more info, please check [wiki](https://github.com/shahzad-dev/rrg-test-project/wiki).
