@@ -16,6 +16,10 @@ Start a local server:
 npm start
 ```
 
+GraphQL server path will be running on [http://localhost:8000](http://localhost:8000)
+App path will be running on [http://localhost:3000](http://localhost:3000)
+
+
 ## Developing
 
 Any changes you make to files in the `js/` directory will cause the server to
