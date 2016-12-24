@@ -1,4 +1,4 @@
-# Test Project (React, GraphQL & Relay)
+# RRG Test Project (React, Relay & Graphql)
 
 This project has been created to test Graphql, Relay and React components.
 
