@@ -185,12 +185,25 @@ var userType = new GraphQLObjectType({
     hobbies: {
         type: hobbyConnection,
         description: 'A person\'s hobbies',
-        args: connectionArgs,
-        resolve: (_, args) => connectionFromArray(
-            faction.hobbies.map((hobby) => hobby),
-            args
-        ),
-    }
+        args: {
+          status: {
+            type: GraphQLString,
+            defaultValue: 'any',
+          },
+          ...connectionArgs,
+        },
+        resolve: (obj,
+            {status, ...args},
+            context,
+            {rootValue: objectManager}
+          ) => {
+              //console.log( "Root", obj, "Status", status, "Args", args, "Context", context);
+              return connectionFromArray(
+                  faction.hobbies.map((hobby) => hobby),
+                  args
+              )
+            },
+      }
   }),
   interfaces: [nodeInterface],
 });

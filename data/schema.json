@@ -249,6 +249,16 @@
               "description": "A person's hobbies",
               "args": [
                 {
+                  "name": "status",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\"any\""
+                },
+                {
                   "name": "after",
                   "description": null,
                   "type": {
