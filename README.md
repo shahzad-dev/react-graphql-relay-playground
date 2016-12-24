@@ -34,9 +34,10 @@ npm run update-schema
 npm start
 ```
 ## GraphQL Test Code
-```
+
 #### Basic Queries
 
+```
 mutation {
   insertAddress(input: {address_1: "333 Blah Street", address_2: "", city: "Montreal", postal_code: "M3M1G9"}) {
     address {
@@ -67,9 +68,9 @@ query {
 }
 ```
 
-```
 #### Advanced Queries
 
+```
 mutation AddAddress{
   insertAddress(input: {address_1: "1010 Zoom Street", address_2: "", city: "Montreal", postal_code: "M3M1G9"}) {
     address {
