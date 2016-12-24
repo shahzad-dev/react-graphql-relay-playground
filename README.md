@@ -72,7 +72,7 @@ query {
 
 ```
 mutation AddAddress{
-  insertAddress(input: {address_1: "1010 Zoom Street", address_2: "", city: "Montreal", postal_code: "M3M1G9"}) {
+  insertAddress(input: {address_1: "1010 Zoom Street", address_2: "", city: "Toronto", postal_code: "M3M1G9"}) {
     address {
       address_1
       address_2
