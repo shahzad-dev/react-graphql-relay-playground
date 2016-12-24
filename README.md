@@ -66,6 +66,52 @@ query {
     }
   }
 }
+
+======== OR ==========
+
+{
+  Query1: viewer {
+    addresses{
+      pageInfo {
+        hasNextPage,
+        hasPreviousPage,
+        startCursor,
+        endCursor
+      },
+      edges {
+        cursor,
+        node {
+          address_1,
+          address_2,
+          postal_code,
+          city,
+          id
+        }
+      }
+    }
+  },
+  Query2: viewer {
+    addresses{
+      pageInfo {
+        hasNextPage,
+        hasPreviousPage,
+        startCursor,
+        endCursor
+      },
+      edges {
+        cursor,
+        node {
+          address_1,
+          address_2,
+          postal_code,
+          city,
+          id
+        }
+      }
+    }
+  },
+}
+
 ```
 
 #### Advanced Queries
