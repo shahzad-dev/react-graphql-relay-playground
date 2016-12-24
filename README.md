@@ -34,4 +34,4 @@ npm run update-schema
 npm start
 ```
 
-For more info, pleasw check wikis.
+For more info, please check wikis.
