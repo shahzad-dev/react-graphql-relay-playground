@@ -35,6 +35,8 @@ npm start
 ```
 ## GraphQL Test Code
 ```
+#### Basic Queries
+
 mutation {
   insertAddress(input: {address_1: "333 Blah Street", address_2: "", city: "Montreal", postal_code: "M3M1G9"}) {
     address {
@@ -63,6 +65,88 @@ query {
     }
   }
 }
+```
+
+```
+#### Advanced Queries
+
+mutation AddAddress{
+  insertAddress(input: {address_1: "1010 Zoom Street", address_2: "", city: "Montreal", postal_code: "M3M1G9"}) {
+    address {
+      address_1
+      address_2
+      city
+      postal_code
+      id
+    }
+  }
+},
+query QueryAll{
+  viewer {
+    addresses {
+      pageInfo {
+        hasNextPage,
+        hasPreviousPage,
+        startCursor,
+        endCursor
+      },
+      edges {
+        cursor,
+        node {
+          address_1,
+          address_2,
+          postal_code,
+          city,
+          id
+        }
+      }
+    }
+  }
+},
+query FirstPageQuery{
+  viewer {
+    addresses(after:"YXJyYXljb25uZWN0aW9uOjA=", first: 1) {
+      pageInfo {
+        hasNextPage,
+        hasPreviousPage,
+        startCursor,
+        endCursor
+      },
+      edges {
+        cursor,
+        node {
+          address_1,
+          address_2,
+          postal_code,
+          city,
+          id
+        }
+      }
+    }
+  }
+},
+query SecondPageQuery{
+  viewer {
+    addresses(after:"YXJyYXljb25uZWN0aW9uOjI=", first: 1) {
+      pageInfo {
+        hasNextPage,
+        hasPreviousPage,
+        startCursor,
+        endCursor
+      },
+      edges {
+        cursor,
+        node {
+          address_1,
+          address_2,
+          postal_code,
+          city,
+          id
+        }
+      }
+    }
+  }
+},
 ```
 
 ## References:
