@@ -1,4 +1,4 @@
-# React, GraphQL & Relay Test Project
+# Test Project (React, GraphQL & Relay)
 
 This project includes GraphQL server, relay and a transpiler that you can use to test Graphql, Relay and React components.
 
