@@ -1,1 +1,1 @@
-# RRG Test Project
+# rrg-test-project
