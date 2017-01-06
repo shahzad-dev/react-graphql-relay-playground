@@ -86,9 +86,9 @@ var faction = {
         }
     ],
     hobbies: [
-      { title:"Cricket" },
-      { title: "Reading" },
-      { title: "Traveling" }
+      { id:"1", title:"Cricket" },
+      { id:"2", title: "Reading" },
+      { id:"3", title: "Traveling" }
     ]
 }
 
@@ -286,6 +286,9 @@ function addHobby(values){
 const hobbyAddMutation = mutationWithClientMutationId({
   name: 'InsertHobby',
   inputFields: {
+    id: {
+        type: new GraphQLNonNull(GraphQLInt)
+    },
     title: {
       type: new GraphQLNonNull(GraphQLString)
     },
@@ -294,6 +297,9 @@ const hobbyAddMutation = mutationWithClientMutationId({
     hobby: {
       type: hobbyType,
       resolve: payload => faction.hobbies[payload.hobbyId],
+    },
+    viewer: {
+      type: userType
     }
   },
   mutateAndGetPayload: (args) => {
