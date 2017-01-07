@@ -48,7 +48,7 @@ export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {
-        hobbies(first: 10) {
+        hobbies(first: 100) {
           edges {
             node {
               title,

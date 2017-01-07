@@ -296,10 +296,17 @@ const hobbyAddMutation = mutationWithClientMutationId({
   outputFields: {
     hobby: {
       type: hobbyType,
-      resolve: payload => faction.hobbies[payload.hobbyId],
+      resolve: ({hobbyId}) => {
+        var hobby = faction.hobbies[payload.hobbyId];
+        return {
+          cursor: cursorForObjectInConnection(faction.hobbies, hobby),
+          node: hobby,
+        };
+      },
     },
     viewer: {
-      type: userType
+      type: userType,
+      resolve: () => getUser('1') //VERY IMPORTANT OTHERWISE FRONTEND Component WILL NOT REFRESH
     }
   },
   mutateAndGetPayload: (args) => {
