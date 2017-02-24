@@ -112,7 +112,7 @@
             },
             {
               "kind": "OBJECT",
-              "name": "Hobbies",
+              "name": "Hobby",
               "ofType": null
             }
           ]
@@ -301,7 +301,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "HobbyConnection",
+                "name": "HobbiesConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -708,7 +708,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "HobbyConnection",
+          "name": "HobbiesConnection",
           "description": "A connection to a list of items.",
           "fields": [
             {
@@ -736,7 +736,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "HobbyEdge",
+                  "name": "HobbiesEdge",
                   "ofType": null
                 }
               },
@@ -751,7 +751,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "HobbyEdge",
+          "name": "HobbiesEdge",
           "description": "An edge in a connection.",
           "fields": [
             {
@@ -760,7 +760,7 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Hobbies",
+                "name": "Hobby",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -790,7 +790,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "Hobbies",
+          "name": "Hobby",
           "description": "A user hobbies",
           "fields": [
             {
@@ -887,6 +887,33 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "InsertHobbyPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updateHobby",
+              "description": null,
+              "args": [
+                {
+                  "name": "input",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "UpdateHobbyInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateHobbyPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1070,7 +1097,7 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Hobbies",
+                "name": "Hobby",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1083,6 +1110,90 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateHobbyInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "title",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UpdateHobbyPayload",
+          "description": null,
+          "fields": [
+            {
+              "name": "hobby",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Hobby",
                 "ofType": null
               },
               "isDeprecated": false,

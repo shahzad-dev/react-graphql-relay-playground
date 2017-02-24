@@ -135,7 +135,7 @@ var addressType = new GraphQLObjectType({
 });
 
 var hobbyType = new GraphQLObjectType({
-  name: 'Hobbies',
+  name: 'Hobby',
   description: 'A user hobbies',
   fields: () => ({
     id: globalIdField('Widget'),
@@ -159,7 +159,7 @@ var {connectionType: widgetConnection} =
   connectionDefinitions({name: 'Widget', nodeType: widgetType});
 
 var {connectionType: hobbyConnection} =
-  connectionDefinitions({name: 'Hobby', nodeType: hobbyType});
+  connectionDefinitions({name: 'Hobbies', nodeType: hobbyType});
 
 
 var userType = new GraphQLObjectType({
@@ -278,7 +278,7 @@ const addressAddMutation = mutationWithClientMutationId({
     return createAddress(args);
   }
 });
-
+//==============================================================================
 function addHobby(values){
     var hobbyId = faction.hobbies.push(values)  - 1;
     return { hobbyId };
@@ -313,12 +313,39 @@ const hobbyAddMutation = mutationWithClientMutationId({
     return addHobby(args);
   }
 });
-
+//==============================================================================
+function updateHobby(values){
+    let {id, title} = values;
+    faction.hobbies[id] = values;
+    return { id };
+}
+const hobbyUpdateMutation = mutationWithClientMutationId({
+  name: 'UpdateHobby',
+  inputFields: {
+    id: {
+        type: new GraphQLNonNull(GraphQLID)
+    },
+    title: {
+      type: new GraphQLNonNull(GraphQLString)
+    },
+  },
+  outputFields: {
+    hobby: {
+      type: hobbyType,
+      resolve: ({hobbyId}) => action.hobbies[payload.hobbyId]
+    },
+  },
+  mutateAndGetPayload: (args) => {
+    return updateHobby(args);
+  }
+});
+//==============================================================================
 var mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
     insertAddress: addressAddMutation,
     insertHobby: hobbyAddMutation,
+    updateHobby: hobbyUpdateMutation,
   })
 });
 

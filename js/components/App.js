@@ -1,6 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import hobbyAddMutation from './hobbyAddMutation';
+import Item from './Item';
 
 class App extends React.Component {
 
@@ -35,7 +36,7 @@ _handle_OnChange = ( event ) => {
         <h1>Hobbies list (Total: {this.state.count})</h1>
         <ul>
           {this.props.viewer.hobbies.edges.map((edge, i) =>
-            <li key={i}>{edge.node.title} (ID: {i})</li>
+            <li key={i}>{edge.node.title} (ID: {i}): <br/><Item hobby={edge.node} /></li>
           )}
         </ul>
         <button onClick={this._handle_OnChange}>Add New</button>
@@ -51,7 +52,9 @@ export default Relay.createContainer(App, {
         hobbies(first: 100) {
           edges {
             node {
+              id,
               title,
+              ${Item.getFragment('hobby')},
             },
           },
         },
