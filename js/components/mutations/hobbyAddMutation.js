@@ -5,7 +5,7 @@ import Relay from 'react-relay'
 
 export default class hobbyAddMutation extends Relay.Mutation {
   static fragments = {
-    Viewer: () => Relay.QL `
+    viewer: () => Relay.QL `
       fragment on User {
         id,
       }
@@ -28,7 +28,7 @@ export default class hobbyAddMutation extends Relay.Mutation {
     return [ {
       type: 'RANGE_ADD',
       parentName: 'viewer',
-      parentID: this.props.Viewer.id,
+      parentID: this.props.viewer.id,
       connectionName: 'HobbyConnection',
       edgeName: 'hobby',
       rangeBehaviors: {
@@ -37,7 +37,6 @@ export default class hobbyAddMutation extends Relay.Mutation {
   }
   getVariables() {
     return {
-      id: this.props.id,
       title: this.props.title,
     }
   }
@@ -50,8 +49,8 @@ export default class hobbyAddMutation extends Relay.Mutation {
           id: this.props.id,
         },
       },
-      Viewer: {
-        id: this.props.Viewer.id,
+      viewer: {
+        id: this.props.viewer.id,
       },
     }
   }

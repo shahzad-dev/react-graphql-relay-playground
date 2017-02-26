@@ -1,6 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
-import hobbyUpdateMutation from './hobbyUpdateMutation';
+import hobbyUpdateMutation from './mutations/hobbyUpdateMutation';
+import hobbyDeleteMutation from './mutations/hobbyDeleteMutation';
 
 class Item extends React.Component {
     static contextTypes = {
@@ -10,29 +11,34 @@ class Item extends React.Component {
     constructor( props, context ) {
       super( props, context )
       this.state = {
+        title: this.props.hobby.title
       }
     }
 
-    _handle_OnChange = ( event ) => {
-        //this.setState({count: this.state.count + 1});
-        console.log(this.props.viewer.hobbies.edges.length);
-        /*this.context.relay.commitUpdate(
-            new hobbyAddMutation( {
-              id: `${this.props.viewer.hobbies.edges.length + 1}`,
-              title: `blah`, // ${this.state.count}`,
-              Viewer: this.props.viewer
+    _handle_OnChange = ( evt ) => {
+        this.context.relay.commitUpdate(
+            new hobbyUpdateMutation( {
+              hobby: this.props.hobby,
+              title: this.refs.title.value,
             } )
           )
-        this.setState({count: this.props.viewer.hobbies.edges.length });
-        */
      }
+     _handle_DeleteChange = ( evt ) => {
+         this.context.relay.commitUpdate(
+             new hobbyDeleteMutation( {
+               hobby: this.props.hobby,
+               viewer: this.props.viewer
+             } )
+           )
+      }
 
     render() {
       return (
-        <div>
-            <strong>Edit Mode</strong>
-            Title: <input type="text" value={this.props.hobby.title} />
-            <input type="button" value="Update" onClick={this._handle_OnChange} />
+        <div style={{marginBottom: 10}}>
+            <strong>Edit Mode</strong><br/>
+            Title: <input type="text" ref="title" defaultValue={this.state.title} />
+          <input type="button" value="Update" onClick={this._handle_OnChange.bind(this)} />
+            <input type="button" value="Delete" onClick={this._handle_DeleteChange.bind(this)} />
         </div>
       );
     }
@@ -45,7 +51,13 @@ class Item extends React.Component {
             id,
             title,
             ${hobbyUpdateMutation.getFragment('hobby')},
+            ${hobbyDeleteMutation.getFragment('hobby')},
         },
+      `,
+      viewer: () => Relay.QL`
+        fragment on User {
+            ${hobbyDeleteMutation.getFragment('viewer')},
+          },
       `,
     },
   });

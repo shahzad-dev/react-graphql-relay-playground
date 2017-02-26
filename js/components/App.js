@@ -1,6 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
-import hobbyAddMutation from './hobbyAddMutation';
+import hobbyAddMutation from './mutations/hobbyAddMutation';
 import Item from './Item';
 
 class App extends React.Component {
@@ -10,25 +10,20 @@ class App extends React.Component {
     }
 
     constructor( props, context ) {
-
       super( props, context )
-
       this.state = {
         count: 0,
       }
     }
 
 _handle_OnChange = ( event ) => {
-    //this.setState({count: this.state.count + 1});
-    console.log(this.props.viewer.hobbies.edges.length);
-    this.context.relay.commitUpdate(
+      this.context.relay.commitUpdate(
         new hobbyAddMutation( {
-          id: `${this.props.viewer.hobbies.edges.length + 1}`,
-          title: `blah`, // ${this.state.count}`,
-          Viewer: this.props.viewer
+          title: this.refs.title.value,
+          viewer: this.props.viewer
         } )
       )
-    this.setState({count: this.props.viewer.hobbies.edges.length });
+    //this.setState({count: this.props.viewer.hobbies.edges.length });
  }
   render() {
     return (
@@ -36,10 +31,18 @@ _handle_OnChange = ( event ) => {
         <h1>Hobbies list (Total: {this.state.count})</h1>
         <ul>
           {this.props.viewer.hobbies.edges.map((edge, i) =>
-            <li key={i}>{edge.node.title} (ID: {i}): <br/><Item hobby={edge.node} /></li>
+            <li key={i}>{edge.node.title} (ID: {i}): <br/>
+              <Item
+                  hobby={edge.node}
+                  viewer={this.props.viewer} />
+            </li>
           )}
         </ul>
-        <button onClick={this._handle_OnChange}>Add New</button>
+        <fieldset>
+          <legend>Form</legend>
+          Title: <input type="text" ref="title" /><br/>
+          <button onClick={this._handle_OnChange.bind(this)}>Add New</button>
+        </fieldset>
       </div>
     );
   }
@@ -58,7 +61,8 @@ export default Relay.createContainer(App, {
             },
           },
         },
-        ${hobbyAddMutation.getFragment('Viewer')},
+        ${hobbyAddMutation.getFragment('viewer')},
+        ${Item.getFragment('viewer')},
       }
     `,
   },

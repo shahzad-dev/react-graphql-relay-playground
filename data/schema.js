@@ -73,66 +73,12 @@ var {nodeInterface, nodeField} = nodeDefinitions(
  * Define your own types here
  */
 var faction = {
-    addresses: [{
-            address_1: '123 Blah Street',
-            address_2: '',
-            city: 'Toronto',
-            postal_code: 'M1X B1Z',
-        },{
-            address_1: '345 Blah Street',
-            address_2: '',
-            city: 'Houston',
-            postal_code: '233441',
-        }
-    ],
     hobbies: [
-      { id:"1", title:"Cricket" },
-      { id:"2", title: "Reading" },
-      { id:"3", title: "Traveling" }
+      { id: 1, title:"Cricket" },
+      { id: 2, title: "Reading" },
+      { id: 3, title: "Traveling" }
     ]
 }
-
-/**
-*  Types
-*/
-
-var widgetType = new GraphQLObjectType({
-  name: 'Widget',
-  description: 'A shiny widget',
-  fields: () => ({
-    id: globalIdField('Widget'),
-    name: {
-      type: GraphQLString,
-      description: 'The name of the widget',
-    },
-  }),
-  interfaces: [nodeInterface],
-});
-
-var addressType = new GraphQLObjectType({
-  name: 'Address',
-  description: 'A user address',
-  fields: () => ({
-    id: globalIdField('Widget'),
-    address_1: {
-      type: GraphQLString,
-      description: 'Street Address 1',
-    },
-    address_2: {
-      type: GraphQLString,
-      description: 'Street Address 2',
-    },
-    city: {
-      type: GraphQLString,
-      description: 'City',
-    },
-    postal_code: {
-      type: GraphQLString,
-      description: 'Postal Code',
-    },
-  }),
-  interfaces: [nodeInterface],
-});
 
 var hobbyType = new GraphQLObjectType({
   name: 'Hobby',
@@ -152,12 +98,6 @@ var hobbyType = new GraphQLObjectType({
  * Define your own connection types here
  */
 
-var {connectionType: addressConnection} =
-   connectionDefinitions({name: 'Address', nodeType: addressType});
-
-var {connectionType: widgetConnection} =
-  connectionDefinitions({name: 'Widget', nodeType: widgetType});
-
 var {connectionType: hobbyConnection} =
   connectionDefinitions({name: 'Hobbies', nodeType: hobbyType});
 
@@ -167,20 +107,10 @@ var userType = new GraphQLObjectType({
   description: 'A person who uses our app',
   fields: () => ({
     id: globalIdField('User'),
-    widgets: {
-      type: widgetConnection,
-      description: 'A person\'s collection of widgets',
-      args: connectionArgs,
-      resolve: (_, args) => connectionFromArray(getWidgets(), args),
-    },
-    addresses: {
-        type: addressConnection,
-        description: 'A person\'s addresses',
-        args: connectionArgs,
-        resolve: (_, args) => connectionFromArray(
-            faction.addresses.map((address) => address),
-            args
-        ),
+    hobby: {
+      type: hobbyType,
+      args: { ...{ id: { type: GraphQLID } } },
+      resolve: ( parent, { id }, context, { rootValue: objectManager } ) => faction.hobbies[ ((fromGlobalId( id ).id) - 1) ],
     },
     hobbies: {
         type: hobbyConnection,
@@ -197,13 +127,12 @@ var userType = new GraphQLObjectType({
             context,
             {rootValue: objectManager}
           ) => {
-              //console.log( "Root", obj, "Status", status, "Args", args, "Context", context);
               return connectionFromArray(
-                  faction.hobbies.map((hobby) => hobby),
+                  faction.hobbies,
                   args
               )
             },
-      }
+      },
   }),
   interfaces: [nodeInterface],
 });
@@ -225,59 +154,6 @@ var queryType = new GraphQLObjectType({
   }),
 });
 
-/**
- * This is the type that will be the root of our mutations,
- * and the entry point into performing writes in our schema.
- */
-
- /**
- * This will return a GraphQLFieldConfig for our ship
- * mutation.
- *
- * It creates these two types implicitly:
- *   input IntroduceShipInput {
- *     clientMutationId: string
- *     shipName: string!
- *     factionId: ID!
- *   }
- *
- *   type IntroduceShipPayload {
- *     clientMutationId: string
- *     ship: Ship
- *     faction: Faction
- *   }
- */
- function createAddress(values){
-     var addressId = faction.addresses.push(values)  - 1;
-     return { addressId };
- }
-
-const addressAddMutation = mutationWithClientMutationId({
-  name: 'InsertAddress',
-  inputFields: {
-    address_1: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
-    address_2: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
-    city: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
-    postal_code: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
-  },
-  outputFields: {
-    address: {
-      type: addressType,
-      resolve: payload => faction.addresses[payload.addressId],
-    }
-  },
-  mutateAndGetPayload: (args) => {
-    return createAddress(args);
-  }
-});
 //==============================================================================
 function addHobby(values){
     var hobbyId = faction.hobbies.push(values)  - 1;
@@ -286,9 +162,6 @@ function addHobby(values){
 const hobbyAddMutation = mutationWithClientMutationId({
   name: 'InsertHobby',
   inputFields: {
-    id: {
-        type: new GraphQLNonNull(GraphQLInt)
-    },
     title: {
       type: new GraphQLNonNull(GraphQLString)
     },
@@ -309,15 +182,25 @@ const hobbyAddMutation = mutationWithClientMutationId({
       resolve: () => getUser('1') //VERY IMPORTANT OTHERWISE FRONTEND Component WILL NOT REFRESH
     }
   },
-  mutateAndGetPayload: (args) => {
-    return addHobby(args);
+  mutateAndGetPayload: (args, content) => {
+    //TODO: Length +1 to create id is not a good approach it may create unique keys
+    //For better keys, time can be used
+    let date = new Date();
+    return addHobby({id: date.getTime(), title: args.title});
   }
 });
 //==============================================================================
 function updateHobby(values){
     let {id, title} = values;
-    faction.hobbies[id] = values;
-    return { id };
+    let data;
+    faction.hobbies =  faction.hobbies.map((hobby, key) => {
+      if( hobby.id == id ) {
+        hobby.title = title;
+        data = hobby;
+      }
+      return hobby;
+    });
+    return {hobby: data};
 }
 const hobbyUpdateMutation = mutationWithClientMutationId({
   name: 'UpdateHobby',
@@ -332,20 +215,56 @@ const hobbyUpdateMutation = mutationWithClientMutationId({
   outputFields: {
     hobby: {
       type: hobbyType,
-      resolve: ({hobbyId}) => action.hobbies[payload.hobbyId]
+      resolve: ({hobby}) => hobby
     },
   },
-  mutateAndGetPayload: (args) => {
-    return updateHobby(args);
+  mutateAndGetPayload: (args, context) => {
+    const id = fromGlobalId(args.id).id;
+    return updateHobby({ ...args, id });
+  }
+});
+//==============================================================================
+function deleteHobby(id){
+    faction.hobbies = faction.hobbies.reduce(function(result, hobby) {
+      if ( hobby.id != id ) {
+        result.push(hobby);
+      }
+      return result;
+    }, []);
+    //delete faction.hobbies[id - 1]
+
+    return id;
+}
+const hobbyDeleteMutation = mutationWithClientMutationId({
+  name: 'DeleteHobby',
+  inputFields: {
+    id: {
+        type: new GraphQLNonNull(GraphQLID)
+    },
+  },
+  outputFields: {
+    deletedHobbyId: {
+      type: GraphQLID,
+      resolve: ( {id} ) => id
+    },
+    viewer: {
+      type: userType,
+      resolve: () => getUser('1') //VERY IMPORTANT OTHERWISE FRONTEND Component WILL NOT REFRESH
+    }
+  },
+  mutateAndGetPayload: ({ id }, context) => {
+    const local_id = fromGlobalId( id ).id;
+    deleteHobby( local_id );
+    return ( {id} );
   }
 });
 //==============================================================================
 var mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    insertAddress: addressAddMutation,
     insertHobby: hobbyAddMutation,
     updateHobby: hobbyUpdateMutation,
+    deleteHobby: hobbyDeleteMutation,
   })
 });
 

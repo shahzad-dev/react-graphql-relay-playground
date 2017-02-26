@@ -27,20 +27,20 @@ export default class hobbyUpdateMutation extends Relay.Mutation {
       return [{
         type: 'FIELDS_CHANGE',
         fieldIDs: {
-          hobby: this.props.id,
+          hobby: this.props.hobby.id,
         },
     }];
   }
   getVariables() {
     return {
-      id: this.props.id,
+      id: this.props.hobby.id,
       title: this.props.title,
     }
   }
   getOptimisticResponse() {
     return {
       hobby: {
-        id: this.props.id,
+        id: this.props.hobby.id,
         title: this.props.title,
       },
     }
