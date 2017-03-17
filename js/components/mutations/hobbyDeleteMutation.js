@@ -10,8 +10,8 @@ export default class hobbyDeleteMutation extends Relay.Mutation {
         id,
       }
     `,
-    viewer: () => Relay.QL `
-      fragment on User {
+    Viewer: () => Relay.QL `
+      fragment on Viewer {
         id,
       }
     `,
@@ -23,7 +23,7 @@ export default class hobbyDeleteMutation extends Relay.Mutation {
     return Relay.QL `
       fragment on DeleteHobbyPayload {
         deletedHobbyId,
-        viewer {
+        Viewer {
             id
         },
       }
@@ -32,8 +32,8 @@ export default class hobbyDeleteMutation extends Relay.Mutation {
   getConfigs() {
     return [ {
       type: 'NODE_DELETE',
-      parentName: 'viewer',
-      parentID: this.props.viewer.id,
+      parentName: 'Viewer',
+      parentID: this.props.Viewer.id,
       connectionName: 'HobbyConnection',
       deletedIDFieldName: 'deletedHobbyId',
     } ]

@@ -42,12 +42,12 @@
               "deprecationReason": null
             },
             {
-              "name": "viewer",
+              "name": "Viewer",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "User",
+                "name": "Viewer",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -97,7 +97,7 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "Viewer",
               "ofType": null
             },
             {
@@ -109,7 +109,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "User",
+          "name": "Viewer",
           "description": "A person who uses our app",
           "fields": [
             {
@@ -595,12 +595,12 @@
               "deprecationReason": null
             },
             {
-              "name": "viewer",
+              "name": "Viewer",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "User",
+                "name": "Viewer",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -761,12 +761,12 @@
               "deprecationReason": null
             },
             {
-              "name": "viewer",
+              "name": "Viewer",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "User",
+                "name": "Viewer",
                 "ofType": null
               },
               "isDeprecated": false,

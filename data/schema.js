@@ -103,10 +103,10 @@ var {connectionType: hobbyConnection} =
 
 
 var userType = new GraphQLObjectType({
-  name: 'User',
+  name: 'Viewer',
   description: 'A person who uses our app',
   fields: () => ({
-    id: globalIdField('User'),
+    id: globalIdField('Viewer'),
     hobby: {
       type: hobbyType,
       args: { ...{ id: { type: GraphQLID } } },
@@ -147,7 +147,7 @@ var queryType = new GraphQLObjectType({
   fields: () => ({
     node: nodeField,
     // Add your own root fields here
-    viewer: {
+    Viewer: {
       type: userType,
       resolve: () => getViewer(),
     },
@@ -177,7 +177,7 @@ const hobbyAddMutation = mutationWithClientMutationId({
         };
       },
     },
-    viewer: {
+    Viewer: {
       type: userType,
       resolve: () => getUser('1') //VERY IMPORTANT OTHERWISE FRONTEND Component WILL NOT REFRESH
     }
@@ -247,7 +247,7 @@ const hobbyDeleteMutation = mutationWithClientMutationId({
       type: GraphQLID,
       resolve: ( {id} ) => id
     },
-    viewer: {
+    Viewer: {
       type: userType,
       resolve: () => getUser('1') //VERY IMPORTANT OTHERWISE FRONTEND Component WILL NOT REFRESH
     }
