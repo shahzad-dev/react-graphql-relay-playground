@@ -1,7 +1,7 @@
 import Relay from 'react-relay';
-import hobbyUpdateMutation from '../mutations/hobbyUpdateMutation';
-import hobbyDeleteMutation from '../mutations/hobbyDeleteMutation';
-import Item from '../Item';
+import hobbyUpdateMutation from './mutations/hobbyUpdateMutation';
+import hobbyDeleteMutation from './mutations/hobbyDeleteMutation';
+import Item from '../../shared/Item';
 
 class HobbyItem extends Item {
     static contextTypes = {

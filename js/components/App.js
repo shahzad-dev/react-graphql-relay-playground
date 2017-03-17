@@ -1,6 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
-import HobbiesList from './relays/HobbiesList';
+import HobbiesList from './units/Hobbies';
 
 class App extends React.Component {
   render() {

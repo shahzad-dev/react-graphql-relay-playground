@@ -1,8 +1,8 @@
 import React from 'react';
 import Relay from 'react-relay';
-import List from '../List';
+import List from '../../shared/List';
 import HobbyItem from './HobbyItem';
-import hobbyAddMutation from '../mutations/hobbyAddMutation';
+import hobbyAddMutation from './mutations/hobbyAddMutation';
 
 class HobbiesList extends List {
 
