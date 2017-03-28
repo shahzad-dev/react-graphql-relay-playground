@@ -34,6 +34,7 @@ import {
   User,
   Widget,
   getUser,
+  setUserEmail,
   getViewer,
   getWidget,
   getWidgets,
@@ -107,6 +108,7 @@ var userType = new GraphQLObjectType({
   description: 'A person who uses our app',
   fields: () => ({
     id: globalIdField('Viewer'),
+    email: { type: GraphQLString, resolve: ( obj ) => obj.email },
     hobby: {
       type: hobbyType,
       args: { ...{ id: { type: GraphQLID } } },
@@ -258,6 +260,29 @@ const hobbyDeleteMutation = mutationWithClientMutationId({
     return ( {id} );
   }
 });
+
+const viewerUpdateMutation = mutationWithClientMutationId( {
+  name: 'Viewer_update',
+  inputFields: {
+    id: { type: new GraphQLNonNull( GraphQLID ) },
+    email: { type: new GraphQLNonNull( GraphQLString ) },
+  },
+  outputFields: {
+    Viewer: {
+      type: userType,
+      resolve: ( parent, args, context, { rootValue: objectManager } ) => getUser('1')
+    },
+  },
+  mutateAndGetPayload: async( { id, email,}, context, { rootValue: objectManager } ) => {
+    // Do not use the passed ID at this point. Use the viewer user ID since it is verified
+    const local_id = fromGlobalId( id ).id
+    //const local_id = objectManager.getViewerUserId()
+    console.log("Update Email", email);
+    setUserEmail(email);
+    return { local_id }
+  },
+} )
+
 //==============================================================================
 var mutationType = new GraphQLObjectType({
   name: 'Mutation',
@@ -265,6 +290,7 @@ var mutationType = new GraphQLObjectType({
     insertHobby: hobbyAddMutation,
     updateHobby: hobbyUpdateMutation,
     deleteHobby: hobbyDeleteMutation,
+    viewerUpdate: viewerUpdateMutation,
   })
 });
 

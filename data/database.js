@@ -15,6 +15,7 @@ class Widget {}
 var viewer = new User();
 viewer.id = '1';
 viewer.name = 'Anonymous';
+viewer.email = 'blah@blah.com';
 var widgets = ['What\'s-it', 'Who\'s-it', 'How\'s-it'].map((name, i) => {
   var widget = new Widget();
   widget.name = name;
@@ -25,6 +26,7 @@ var widgets = ['What\'s-it', 'Who\'s-it', 'How\'s-it'].map((name, i) => {
 module.exports = {
   // Export methods that your schema can use to interact with your database
   getUser: (id) => id === viewer.id ? viewer : null,
+  setUserEmail: (email) => viewer.email = email,
   getViewer: () => viewer,
   getWidget: (id) => widgets.find(w => w.id === id),
   getWidgets: () => widgets,
