@@ -7,6 +7,11 @@ export default class extends Relay.Route {
         Viewer
       }
     `,
+    store: (Component) => Relay.QL`
+        query storeQuery {
+          store { ${Component.getFragment('store')} },
+        }
+    `
   };
   static routeName = 'AppHomeRoute';
 }

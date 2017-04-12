@@ -59,6 +59,32 @@ function startGraphQLServer(callback) {
     clean('./data/schema');
     const {Schema} = require('./data/schema');
     const graphQLApp = express();
+    //CORS middleware
+    graphQLApp.use(function (req, res, next) {
+
+        // Website you wish to allow to connect
+        //TODO - Origin should be restricted path but doesn't work.. not sure why
+        //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000/graphql');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        // Request methods you wish to allow
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+        // Request headers you wish to allow
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+        // Set to true if you need the website to include cookies in the requests sent
+        // to the API (e.g. in case you use sessions)
+        res.setHeader('Access-Control-Allow-Credentials', true);
+
+        // Pass to next layer of middleware
+
+        if (req.method === "OPTIONS") {
+            return res.status(200).end();
+        }
+
+        return next();
+    });
     graphQLApp.use('/', graphQLHTTP({graphiql: true, pretty: true, schema: Schema}));
     graphQLServer = graphQLApp.listen(GRAPHQL_PORT, () => {
         console.log(`GraphQL server is now running on http://localhost:${GRAPHQL_PORT}`);

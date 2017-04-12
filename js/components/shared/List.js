@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default class List extends React.Component {
-  
+
     constructor( props, context ) {
       super( props, context )
       this.state = {
@@ -16,7 +16,7 @@ export default class List extends React.Component {
     render() {
       return (
         <div>
-          <h1>Hobbies list (Total: {this.state.count})</h1>
+          <h3>Hobbies list (Total: {this.state.count})</h3>
           <ul>
             {this.props.Viewer.hobbies.edges.map((edge, i) =>
               <li key={i}>{edge.node.title} (ID: {i}): <br/>
